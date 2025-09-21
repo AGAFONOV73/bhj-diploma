@@ -13,71 +13,84 @@ class AccountsWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor( element ) {
-
+  constructor(element) {
+    if (!element) {
+      throw new Error('Элемент не определён');
+    }
+    this.element = element;
+    this.registerEvents();
+    this.update();
   }
 
-  /**
-   * При нажатии на .create-account открывает окно
-   * #modal-new-account для создания нового счёта
-   * При нажатии на один из существующих счетов
-   * (которые отображены в боковой колонке),
-   * вызывает AccountsWidget.onSelectAccount()
-   * */
+  // Устанавка обработчиков событий: создание счета и выбор счета
   registerEvents() {
+    // Обработчик для кнопки "Новый счёт"
+    this.element.querySelector('.create-account').addEventListener('click', () => {
+      const modal = App.getModal('newAccount'); // получаем модальное окно
+      modal.open(); // открываем его
+    });
 
+    // Делегирование события клика по счетам
+    this.element.addEventListener('click', (e) => {
+      const accountItem = e.target.closest('.account');
+      if (accountItem) {
+        this.onSelectAccount(accountItem);
+      }
+    });
   }
 
-  /**
-   * Метод доступен только авторизованным пользователям
-   * (User.current()).
-   * Если пользователь авторизован, необходимо
-   * получить список счетов через Account.list(). При
-   * успешном ответе необходимо очистить список ранее
-   * отображённых счетов через AccountsWidget.clear().
-   * Отображает список полученных счетов с помощью
-   * метода renderItem()
-   * */
+  // Обновляет список счетов
   update() {
+    if (!User.current) return; // если пользователь не авторизован, ничего не делаем
 
+    // Получение списка счетов
+    Account.list(User.current.id, (err, response) => {
+      if (err || !response || !response.data) return;
+      this.clear();
+
+      response.data.forEach(account => this.renderItem(account));
+    });
   }
 
-  /**
-   * Очищает список ранее отображённых счетов.
-   * Для этого необходимо удалять все элементы .account
-   * в боковой колонке
-   * */
+  // Очищает список счетов
   clear() {
-
+    this.element.querySelectorAll('.account').forEach(item => item.remove());
   }
 
-  /**
-   * Срабатывает в момент выбора счёта
-   * Устанавливает текущему выбранному элементу счёта
-   * класс .active. Удаляет ранее выбранному элементу
-   * счёта класс .active.
-   * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
-   * */
-  onSelectAccount( element ) {
+  // Обрабатывает выбор счета
+  onSelectAccount(accountElement) {
+    // Убрать активный класс у всех
+    this.element.querySelectorAll('.account').forEach(item => item.classList.remove('active'));
 
+    // Добавить активный класс выбранному
+    accountElement.classList.add('active');
+
+    // Получить id выбранного счета
+    const accountId = accountElement.dataset.id;
+
+    // Передать в App вызов отображения страницы транзакций
+    App.showPage('transactions', { account_id: accountId });
   }
 
-  /**
-   * Возвращает HTML-код счёта для последующего
-   * отображения в боковой колонке.
-   * item - объект с данными о счёте
-   * */
-  getAccountHTML(item){
-
+  // Формирует HTML для счета
+  getAccountHTML(data) {
+    const sumFormatted = data.sum.toLocaleString(undefined, {
+      style: 'currency',
+      currency: 'RUB',
+      minimumFractionDigits: 2
+    });
+    return `
+<li class="account" data-id="${data.id}">
+    <a href="#">
+        <span>${data.name}</span> /
+        <span>${sumFormatted}</span>
+    </a>
+</li>`;
   }
 
-  /**
-   * Получает массив с информацией о счетах.
-   * Отображает полученный с помощью метода
-   * AccountsWidget.getAccountHTML HTML-код элемента
-   * и добавляет его внутрь элемента виджета
-   * */
-  renderItem(data){
-
+  // Отрисовка счета
+  renderItem(data) {
+    const html = this.getAccountHTML(data);
+    this.element.insertAdjacentHTML('beforeend', html);
   }
 }

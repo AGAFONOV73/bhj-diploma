@@ -1,7 +1,7 @@
 {
   "name": "bhj-diploma",
   "version": "1.0.0",
-  "description": "",
+  "description": "Нажмите на изображение, чтобы посмотреть видео и описание:",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -24,5 +24,13 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netology-code/bhj-diploma.git"
+  },
+  "bugs": {
+    "url": "https://github.com/netology-code/bhj-diploma/issues"
+  },
+  "homepage": "https://github.com/netology-code/bhj-diploma#readme"
 }

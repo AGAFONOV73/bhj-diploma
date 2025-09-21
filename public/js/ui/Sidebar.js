@@ -7,28 +7,47 @@ class Sidebar {
   /**
    * Запускает initAuthLinks и initToggleButton
    * */
-  static init() {
-    this.initAuthLinks();
-    this.initToggleButton();
-  }
-
-  /**
-   * Отвечает за скрытие/показа боковой колонки:
-   * переключает два класса для body: sidebar-open и sidebar-collapse
-   * при нажатии на кнопку .sidebar-toggle
-   * */
-  static initToggleButton() {
-
-  }
-
-  /**
-   * При нажатии на кнопку входа, показывает окно входа
-   * (через найденное в App.getModal)
-   * При нажатии на кнопку регастрации показывает окно регистрации
-   * При нажатии на кнопку выхода вызывает User.logout и по успешному
-   * выходу устанавливает App.setState( 'init' )
-   * */
   static initAuthLinks() {
+    document
+      .querySelectorAll('.sidebar__menu a[href="#register"]')
+      .forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const modal = App.getModal("modal-register");
+          Modal.open(modal.element);
+        });
+      });
 
+    document
+      .querySelectorAll('.sidebar__menu a[href="#login"]')
+      .forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const modal = App.getModal("modal-login");
+          Modal.open(modal.element);
+        });
+      });
+
+    document
+      .querySelectorAll('.sidebar__menu a[href="#logout"]')
+      .forEach((link) => {
+        link.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const response = await User.logout();
+          if (response.success) {
+            App.setState("init");
+          }
+        });
+      });
+  }
+
+  static initToggleButton() {
+    const toggleBtn = document.querySelector("");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("sidebar-open");
+        document.body.classList.toggle("sidebar-collapse");
+      });
+    }
   }
 }
