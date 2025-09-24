@@ -1,39 +1,32 @@
-import { AsyncForm } from './path/to/AsyncForm.js';
-/**
- * Класс CreateAccountForm управляет формой
- * создания нового счёта
- * */
+
+
 class CreateAccountForm extends AsyncForm {
-  constructor(element, modalWindow) {
-    super(element);
-    this.modalWindow = modalWindow; // DOM-элемент окна/модального окна
-  }
-
-  async onSubmit(data) {
-    try {
-      const result = await Account.create(data);
-      if (result.success) {
-        this.reset();
-        if (this.modalWindow) {
-          
-          this.closeModal();
-        }
-        App.update();
+  /**
+   * Создаёт счёт с помощью Account.create и закрывает
+   * окно в случае успеха, а также вызывает App.update()
+   * и сбрасывает форму
+   * */
+  onSubmit(data) {
+    Account.create(data, (error, response) => {
+      if (error) {
+        // Ошибка сети или сервера
+        alert("Ошибка сети. Попробуйте позже.");
+        console.error("Network error:", error);
+        return;
       }
-    } catch (error) {
-      console.error('Ошибка при создании аккаунта:', error);
-      
-    }
-  }
 
-  closeModal() {
-    
-    if (this.modalWindow) {
-      this.modalWindow.style.display = 'none'; 
-    }
-  }
-
-  reset() {
-    this.element.reset(); // сброс формы
+      if (response && response.success) {
+        this.element.reset();
+        App.getModal("createAccount").close();
+        App.update();
+      } else if (response && response.error) {
+        // Показываем сообщение ошибки от сервера
+        alert(`Ошибка создания счёта: ${response.error}`);
+        console.error("Account creation failed:", response.error);
+      } else {
+        alert("Неизвестная ошибка при создании счёта");
+        console.error("Account creation failed: Unknown error", response);
+      }
+    });
   }
 }

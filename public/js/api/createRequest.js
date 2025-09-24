@@ -1,54 +1,49 @@
-/**
- * Основная функция для совершения запросов
- * на сервер.
- * */
-function createRequest({ url, data = {}, method = 'GET', callback = () => {} }) {
-  if (!url) {
-    throw new Error('URL обязателен для createRequest');
-  }
+
+const createRequest = (options = {}) => {
+  const {
+    url = "",
+    method = "GET",
+    data = {},
+    responseType = "json",
+    callback = () => {},
+  } = options;
 
   const xhr = new XMLHttpRequest();
-  const httpMethod = method.toUpperCase();
-
   let requestUrl = url;
-  let requestData = null;
 
-  if (httpMethod === 'GET' && data && Object.keys(data).length > 0) {
-    // Добавляем данные в строку запроса
-    const params = new URLSearchParams(data).toString();
-    requestUrl += (url.includes('?') ? '&' : '?') + params;
-  } else if (httpMethod !== 'GET' && data && Object.keys(data).length > 0) {
-    // Формируем FormData для передачи
-    requestData = new FormData();
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        requestData.append(key, data[key]);
-      }
-    }
+  // Для GET-запроса добавляем параметры в URL
+  if (method === "GET" && Object.keys(data).length > 0) {
+    const params = Object.entries(data)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&");
+    requestUrl += (requestUrl.includes("?") ? "&" : "?") + params;
   }
 
-  xhr.open(httpMethod, requestUrl, true);
-  xhr.responseType = 'json';
+  xhr.open(method, requestUrl);
+  xhr.responseType = responseType;
 
-  xhr.onload = function () {
+  xhr.onload = () => {
     if (xhr.status >= 200 && xhr.status < 300) {
       callback(null, xhr.response);
     } else {
-      callback({
-        status: xhr.status,
-        statusText: xhr.statusText,
-        response: xhr.response,
-      }, null);
+      callback(xhr.statusText || "Request failed", null);
     }
   };
 
-  xhr.onerror = function () {
-    callback({
-      status: xhr.status,
-      statusText: xhr.statusText,
-      response: null,
-    }, null);
+  xhr.onerror = () => {
+    callback("Network error", null);
   };
 
-  xhr.send(requestData);
-}
+  if (method !== "GET" && Object.keys(data).length > 0) {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    xhr.send(formData);
+  } else {
+    xhr.send();
+  }
+};

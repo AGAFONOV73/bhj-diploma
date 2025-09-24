@@ -1,4 +1,4 @@
-import { Entity } from './Entity.js';
+
 /**
  * Класс Transaction наследуется от Entity.
  * Управляет счетами пользователя.

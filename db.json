@@ -5,6 +5,18 @@
       "email": "demo@demo",
       "password": "demo",
       "id": "1"
+    },
+    {
+      "name": "Олег",
+      "email": "oleg@demo.ru",
+      "password": "123456",
+      "id": "b470e7somfwq6mql"
+    },
+    {
+      "name": "",
+      "email": "",
+      "password": "",
+      "id": "b470e7somfwq6mqu"
     }
   ],
   "accounts": [
@@ -22,6 +34,16 @@
       "name": "Бизнес",
       "user_id": "1",
       "id": "3"
+    },
+    {
+      "name": "Альфа",
+      "user_id": "b470e7somfwq6mql",
+      "id": "b470e98gmfwraplj"
+    },
+    {
+      "name": "сбер",
+      "user_id": "b470e7somfwq6mql",
+      "id": "b470edj4mfya1uzk"
     }
   ],
   "transactions": [
@@ -159,6 +181,24 @@
       "sum": 300000,
       "type": "expense",
       "user_id": "1"
+    },
+    {
+      "id": "b470ed3gmfydkak6",
+      "type": "income",
+      "name": "продажа ",
+      "sum": 500,
+      "account_id": "b470edj4mfya1uzk",
+      "user_id": "b470e7somfwq6mql",
+      "created_at": "2025-09-24T19:26:16.949Z"
+    },
+    {
+      "id": "b470e2zomfye0bll",
+      "type": "expense",
+      "name": "покупка",
+      "sum": 500,
+      "account_id": "b470edj4mfya1uzk",
+      "user_id": "b470e7somfwq6mql",
+      "created_at": "2025-09-24T19:38:44.792Z"
     }
   ]
 }

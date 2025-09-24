@@ -1,25 +1,43 @@
-import { Entity } from './Entity.js';
 /**
  * Класс Account наследуется от Entity.
  * Управляет счетами пользователя.
  * Имеет свойство URL со значением '/account'
  * */
+
 class Account extends Entity {
   static URL = "/account";
 
-  /**
-   * Получает информацию о счёте
-   * */
-  static get(id, callback) {
-    if (!id) {
-      callback(new Error("Не указан id"), null);
-      return;
-    }
-
+  static get(id = "", callback) {
     createRequest({
-      url: `${this.URL}/${id}`,
+      url: this.URL + (id ? `/${id}` : ""),
       method: "GET",
-      callback,
+      responseType: "json",
+      callback: (error, response) => {
+        callback(error, response);
+      },
+    });
+  }
+
+  /**
+   * Получает список счетов
+   * @param {Object} data - параметры запроса (можно пустой объект)
+   * @param {Function} callback - функция обратного вызова с одним параметром response
+   */
+  static list(data = {}, callback) {
+    createRequest({
+      url: this.URL,
+      method: "GET",
+      data: data,
+      responseType: "json",
+      callback: (error, response) => {
+        if (error) {
+          // Формируем ответ с ошибкой
+          callback({ success: false, error: error });
+        } else {
+          // Предполагается, что сервер возвращает объект вида {success: true, data: [...]}
+          callback(response);
+        }
+      },
     });
   }
 }

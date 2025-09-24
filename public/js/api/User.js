@@ -1,93 +1,83 @@
-/**
- * Класс User управляет авторизацией, выходом и
- * регистрацией пользователя из приложения
- * Имеет свойство URL, равное '/user'.
- * */
+
 class User {
-  static URL = "/user";
-
-  // Устанавливает текущего пользователя в localStorage
+  static URL = '/user';
+  
   static setCurrent(user) {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
-  // Возвращает объект текущего пользователя или undefined, если нет
-  static current() {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      try {
-        return JSON.parse(userData);
-      } catch (e) {
-        return undefined;
-      }
-    }
-    return undefined;
-  }
-
-  // Удаляет текущего пользователя из localStorage
+ 
   static unsetCurrent() {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
   }
 
-  // Загружает данные о текущем пользователе с сервера и обновляет localStorage
+  
+  static current() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  
   static fetch(callback) {
     createRequest({
-      url: `${this.URL}/current`,
-      method: "GET",
-      callback: (err, response) => {
-        if (response && response.success) {
+      url: this.URL + '/current',
+      method: 'GET',
+      responseType: 'json',
+      callback: (error, response) => {
+        if (!error && response && response.user) {
           this.setCurrent(response.user);
         } else {
           this.unsetCurrent();
         }
-        callback(err, response);
-      },
+        callback(error, response);
+      }
     });
   }
 
-  // Регистрация нового пользователя
-  static register(data, callback) {
-    createRequest({
-      url: `${this.URL}/register`,
-      method: "POST",
-      data,
-      callback: (err, response) => {
-        if (response && response.success) {
-          this.setCurrent(response.user);
-        }
-        callback(err, response);
-      },
-    });
-  }
-
-  // Авторизация пользователя
+  
   static login(data, callback) {
     createRequest({
-      url: `${this.URL}/login`,
-      method: "POST",
+      url: this.URL + '/login',
+      method: 'POST',
+      responseType: 'json',
       data,
-      callback: (err, response) => {
-        if (response && response.success) {
+      callback: (error, response) => {
+        if (!error && response && response.user) {
           this.setCurrent(response.user);
         }
-        callback(err, response);
-      },
+        callback(error, response);
+      }
     });
   }
 
-  // Выход из системы
+ 
+  static register(data, callback) {
+    createRequest({
+      url: this.URL + '/register',
+      method: 'POST',
+      responseType: 'json',
+      data,
+      callback: (error, response) => {
+        if (!error && response && response.user) {
+          this.setCurrent(response.user);
+        }
+        callback(error, response);
+      }
+    });
+  }
+
+  
   static logout(callback) {
     createRequest({
-      url: `${this.URL}/logout`,
-      method: "POST",
-      callback: (err, response) => {
-        if (!err && response && response.success) {
+      url: this.URL + '/logout',
+      method: 'POST',
+      responseType: 'json',
+      callback: (error, response) => {
+        if (!error && response && response.success) {
           this.unsetCurrent();
         }
-        if (callback) {
-          callback(err, response);
-        }
-      },
+        callback(error, response);
+      }
     });
   }
 }

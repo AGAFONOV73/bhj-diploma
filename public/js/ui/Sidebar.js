@@ -1,52 +1,51 @@
-/**
- * Класс Sidebar отвечает за работу боковой колонки:
- * кнопки скрытия/показа колонки в мобильной версии сайта
- * и за кнопки меню
- * */
+
+
 class Sidebar {
-  /**
-   * Запускает initAuthLinks и initToggleButton
-   * */
-  static initAuthLinks() {
-    document
-      .querySelectorAll('.sidebar__menu a[href="#register"]')
-      .forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          const modal = App.getModal("modal-register");
-          Modal.open(modal.element);
-        });
-      });
-
-    document
-      .querySelectorAll('.sidebar__menu a[href="#login"]')
-      .forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          const modal = App.getModal("modal-login");
-          Modal.open(modal.element);
-        });
-      });
-
-    document
-      .querySelectorAll('.sidebar__menu a[href="#logout"]')
-      .forEach((link) => {
-        link.addEventListener("click", async (e) => {
-          e.preventDefault();
-          const response = await User.logout();
-          if (response.success) {
-            App.setState("init");
-          }
-        });
-      });
+  
+  static init() {
+    this.initAuthLinks();
+    this.initToggleButton();
   }
 
+  
   static initToggleButton() {
-    const toggleBtn = document.querySelector("");
-    if (toggleBtn) {
-      toggleBtn.addEventListener("click", () => {
-        document.body.classList.toggle("sidebar-open");
-        document.body.classList.toggle("sidebar-collapse");
+    const toggleButton = document.querySelector('.sidebar-toggle');
+    if (toggleButton) {
+      toggleButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const body = document.body;
+        if (body.classList.contains('sidebar-open')) {
+          body.classList.remove('sidebar-open');
+          body.classList.add('sidebar-collapse');
+        } else {
+          body.classList.remove('sidebar-collapse');
+          body.classList.add('sidebar-open');
+        }
+      });
+    }
+  }
+
+ 
+  static initAuthLinks() {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+      sidebar.addEventListener('click', (e) => {
+        if (e.target.closest('.menu-item_login')) {
+          e.preventDefault();
+          App.getModal('login').open();
+        }
+        if (e.target.closest('.menu-item_register')) {
+          e.preventDefault();
+          App.getModal('register').open();
+        }
+        if (e.target.closest('.menu-item_logout')) {
+          e.preventDefault();
+          User.logout((error, response) => {
+            if (!error && response && response.success) {
+              App.setState('init');
+            }
+          });
+        }
       });
     }
   }
