@@ -6,7 +6,6 @@
  * для последующей обработки
  * */
 
-
 class AsyncForm {
   /**
    * Если переданный элемент не существует,
@@ -15,34 +14,34 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-    if (!element) throw new Error('Element not provided');
+    if (!element) throw new Error("Element not provided");
     this.element = element;
     this.registerEvents();
   }
 
-  
   registerEvents() {
-    this.element.addEventListener('submit', (e) => {
+    this.element.addEventListener("submit", (e) => {
       e.preventDefault();
       this.submit();
     });
   }
 
- 
   getData() {
     const formData = new FormData(this.element);
-    const data = {};
-    for (let [key, value] of formData.entries()) {
-      data[key] = value;
-    }
-    return data;
+
+    return Object.fromEntries(formData.entries());
   }
+  // getData() {
+  //   const formData = new FormData(this.element);
+  //   const data = {};
+  //   for (let [key, value] of formData.entries()) {
+  //     data[key] = value;
+  //   }
+  //   return data;
+  // }
 
-  onSubmit(options){
+  onSubmit(options) {}
 
-  }
-
-  
   submit() {
     this.onSubmit(this.getData());
   }

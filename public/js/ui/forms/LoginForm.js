@@ -1,7 +1,4 @@
-/**
- * Класс LoginForm управляет формой
- * входа в портал
- * */
+
 class LoginForm extends AsyncForm {
   
   onSubmit(data) {

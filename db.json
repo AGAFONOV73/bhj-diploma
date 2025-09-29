@@ -36,14 +36,9 @@
       "id": "3"
     },
     {
-      "name": "Альфа",
-      "user_id": "b470e7somfwq6mql",
-      "id": "b470e98gmfwraplj"
-    },
-    {
       "name": "сбер",
       "user_id": "b470e7somfwq6mql",
-      "id": "b470edj4mfya1uzk"
+      "id": "b470e9r8mg59s4ve"
     }
   ],
   "transactions": [
@@ -183,22 +178,22 @@
       "user_id": "1"
     },
     {
-      "id": "b470ed3gmfydkak6",
+      "id": "b470e86cmg5ahcyl",
       "type": "income",
       "name": "продажа ",
       "sum": 500,
-      "account_id": "b470edj4mfya1uzk",
+      "account_id": "b470e9r8mg59s4ve",
       "user_id": "b470e7somfwq6mql",
-      "created_at": "2025-09-24T19:26:16.949Z"
+      "created_at": "2025-09-29T15:34:24.476Z"
     },
     {
-      "id": "b470e2zomfye0bll",
+      "id": "b470e8tsmg5ahsci",
       "type": "expense",
       "name": "покупка",
-      "sum": 500,
-      "account_id": "b470edj4mfya1uzk",
+      "sum": 200,
+      "account_id": "b470e9r8mg59s4ve",
       "user_id": "b470e7somfwq6mql",
-      "created_at": "2025-09-24T19:38:44.792Z"
+      "created_at": "2025-09-29T15:34:44.417Z"
     }
   ]
 }

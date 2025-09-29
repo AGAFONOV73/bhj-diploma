@@ -6,16 +6,50 @@
 class Entity {
   static URL = "";
   
+  // static list(data, callback) {
+  //   createRequest({
+  //     url: this.URL,
+  //     method: "GET",
+  //     data,
+  //     responseType: "json",
+  //     callback: (error, response) => {
+  //       callback(error, response);
+  //     },
+  //   });
+  // }
   
+  // static create(data, callback) {
+  //   createRequest({
+  //     url: this.URL,
+  //     method: "PUT",
+  //     data,
+  //     responseType: "json",
+  //     callback: (error, response) => {
+  //       callback(error, response);
+  //     },
+  //   });
+  // }
+
+  
+  // static remove(data, callback ) {
+  //   createRequest({
+  //     url: this.URL,
+  //     method: 'DELETE',
+  //     data,
+  //     responseType: 'json',
+  //     callback: (error, response) => {
+  //       callback(error, response);
+  //     },
+  //   });
+  // }
   static list(data, callback) {
     createRequest({
       url: this.URL,
       method: "GET",
       data,
       responseType: "json",
-      callback: (error, response) => {
-        callback(error, response);
-      },
+      callback,
+    
     });
   }
   
@@ -25,9 +59,7 @@ class Entity {
       method: "PUT",
       data,
       responseType: "json",
-      callback: (error, response) => {
-        callback(error, response);
-      },
+      callback,
     });
   }
 
@@ -38,9 +70,7 @@ class Entity {
       method: 'DELETE',
       data,
       responseType: 'json',
-      callback: (error, response) => {
-        callback(error, response);
-      },
+      callback,
     });
   }
 }

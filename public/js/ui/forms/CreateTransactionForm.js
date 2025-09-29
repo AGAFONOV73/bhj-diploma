@@ -9,18 +9,36 @@ class CreateTransactionForm extends AsyncForm {
   }
 
   
+  // renderAccountsList() {
+  //   const select = this.element.querySelector('select[name="account_id"]');
+  //   if (!select) return;
+  //   Account.list({}, (response) => {
+  //     if (response && response.success) {
+  //       select.innerHTML = '';
+  //       response.data.forEach(account => {
+  //         const option = document.createElement('option');
+  //         option.value = account.id;
+  //         option.textContent = account.name;
+  //         select.appendChild(option);
+  //       });
+  //     } else {
+  //       console.error('Failed to load accounts for select:', response);
+  //     }
+  //   });
+  // }
   renderAccountsList() {
     const select = this.element.querySelector('select[name="account_id"]');
     if (!select) return;
+    
     Account.list({}, (response) => {
       if (response && response.success) {
-        select.innerHTML = '';
-        response.data.forEach(account => {
-          const option = document.createElement('option');
-          option.value = account.id;
-          option.textContent = account.name;
-          select.appendChild(option);
-        });
+        // Формируем всю разметку одним вызовом reduce
+        const optionsHTML = response.data.reduce((html, account) => {
+          return html + `<option value="${account.id}">${account.name}</option>`;
+        }, '');
+        
+        // Присваиваем только один раз
+        select.innerHTML = optionsHTML;
       } else {
         console.error('Failed to load accounts for select:', response);
       }

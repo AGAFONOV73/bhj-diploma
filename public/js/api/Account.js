@@ -12,32 +12,30 @@ class Account extends Entity {
       url: this.URL + (id ? `/${id}` : ""),
       method: "GET",
       responseType: "json",
-      callback: (error, response) => {
-        callback(error, response);
-      },
+      callback,
     });
   }
 
-  /**
-   * Получает список счетов
-   * @param {Object} data - параметры запроса (можно пустой объект)
-   * @param {Function} callback - функция обратного вызова с одним параметром response
-   */
-  static list(data = {}, callback) {
-    createRequest({
-      url: this.URL,
-      method: "GET",
-      data: data,
-      responseType: "json",
-      callback: (error, response) => {
-        if (error) {
-          // Формируем ответ с ошибкой
-          callback({ success: false, error: error });
-        } else {
-          // Предполагается, что сервер возвращает объект вида {success: true, data: [...]}
-          callback(response);
-        }
-      },
-    });
-  }
+  // /**
+  //  * Получает список счетов
+  //  * @param {Object} data - параметры запроса (можно пустой объект)
+  //  * @param {Function} callback - функция обратного вызова с одним параметром response
+  //  */
+  // static list(data = {}, callback) {
+  //   createRequest({
+  //     url: this.URL,
+  //     method: "GET",
+  //     data: data,
+  //     responseType: "json",
+  //     callback: (error, response) => {
+  //       if (error) {
+  //         // Формируем ответ с ошибкой
+  //         callback({ success: false, error: error });
+  //       } else {
+  //         // Предполагается, что сервер возвращает объект вида {success: true, data: [...]}
+  //         callback(response);
+  //       }
+  //     },
+  //   });
+  // }
 }
