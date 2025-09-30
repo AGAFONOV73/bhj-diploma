@@ -1,15 +1,7 @@
 
 
 class AccountsWidget {
-  /**
-   * Устанавливает текущий элемент в свойство element
-   * Регистрирует обработчики событий с помощью
-   * AccountsWidget.registerEvents()
-   * Вызывает AccountsWidget.update() для получения
-   * списка счетов и последующего отображения
-   * Если переданный элемент не существует,
-   * необходимо выкинуть ошибку.
-   * */
+  
   constructor( element ) {
     if (!element) throw new Error('Element not provided');
     this.element = element;

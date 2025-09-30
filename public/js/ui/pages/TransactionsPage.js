@@ -59,12 +59,7 @@ class TransactionsPage {
         this.renderTitle(response.data.name);
       }
     });
-    // Transaction.list(options, (response) => {
-    //   if (response && response.success) {
-         
-    //     this.renderTransactions(response.data);
-    //   }
-    // });
+
     Transaction.list(options, (error, response) => {
       if (error) {
         console.error(error);

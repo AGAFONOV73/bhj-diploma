@@ -7,12 +7,7 @@
  * */
 
 class AsyncForm {
-  /**
-   * Если переданный элемент не существует,
-   * необходимо выкинуть ошибку.
-   * Сохраняет переданный элемент и регистрирует события
-   * через registerEvents()
-   * */
+  
   constructor(element) {
     if (!element) throw new Error("Element not provided");
     this.element = element;
@@ -31,14 +26,7 @@ class AsyncForm {
 
     return Object.fromEntries(formData.entries());
   }
-  // getData() {
-  //   const formData = new FormData(this.element);
-  //   const data = {};
-  //   for (let [key, value] of formData.entries()) {
-  //     data[key] = value;
-  //   }
-  //   return data;
-  // }
+  
 
   onSubmit(options) {}
 
